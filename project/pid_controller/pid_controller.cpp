@@ -44,10 +44,10 @@ void PID::UpdateError(double cte) {
      //diff_cte = (cte - this->cte)/delta_time;
      diff_cte = 0;
    }
-   
+   pre_cte = cte;
    //int_cte += cte * delta_time;
    int_cte += cte * delta_time;
-   pre_cte = cte;
+   
 }
 
 double PID::TotalError() {

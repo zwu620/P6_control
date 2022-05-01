@@ -237,7 +237,11 @@ int main ()
   //pid_steer.Init(0.35, 0.07, 0.5, 1.2, -1.2); //Test 4 - kii 0.05, 0.07,
   //pid_steer.Init(0.35, 0.09, 0.4, 1.2, -1.2); //Test 5
   //pid_steer.Init(0.3, 0.1, 0.4, 1.2, -1.2); //Test 6
-  pid_steer.Init(0.45, 0.042, 0.3, 1.2, -1.2); //Test 7
+  //pid_steer.Init(0.45, 0.04, 0.3, 1.2, -1.2); //Test 7 - hit the wall on the right
+  //pid_steer.Init(100, 0.0000, 0.0, 1.2, -1.2);//Day 3
+  pid_steer.Init(0.35, 0.1, 0.5, 1.2, -1.2); // Day 4 Test 1
+  
+  
   // initialize pid throttle
   /**
   * TODO (Step 1): create pid (pid_throttle) for throttle command and initialize values
@@ -252,7 +256,8 @@ int main ()
   //pid_throttle.Init(0.35, 0.01, 0.2, 1, -1);//Test 3, 4
   //pid_throttle.Init(0.35, 0.01, 0.2, 1, -1);//Test 5
   //pid_throttle.Init(0.35, 0.01, 0.2, 1, -1);//Test 6
-  pid_throttle.Init(0.152, 0.04, 0.113, 1, -1);//Test 7
+  //pid_throttle.Init(0.15, 0.04, 0.1, 1, -1);//Test 7 - hit the wall on the right
+  pid_throttle.Init(0.35, 0.01, 0.2, 1, -1); //Day 4 Test 1
   
 
   h.onMessage([&pid_steer, &pid_throttle, &new_delta_time, &timer, &prev_timer, &i, &prev_timer](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, uWS::OpCode opCode)
@@ -329,7 +334,12 @@ int main ()
           //error_steer = 0;
 		  //The variable y_points and x_point gives the desired trajectory planned by the path_planner.
           //Calaculate the desired angle by the most recent two points in the planed path:
+          //* Tried the most recent points
           //double desired_angle = angle_between_points(x_points[x_points.size()-2], y_points[y_points.size()-2], x_points[x_points.size()-1], y_points[y_points.size()-1]);
+          //* Tried the most recent Spirals
+          //int best_spiral_idx = best_spirals.back();
+          //double desired_angle = angle_between_points(spirals_x[best_spiral_idx].front(), spirals_y[best_spiral_idx].front(), spirals_x[best_spiral_idx][1], spirals_y[best_spiral_idx][1]);
+          //* Tried average of all points
           double x_avg = (accumulate(x_points.begin(), x_points.end(), 0.0)/x_points.size());
           double y_avg = (accumulate(y_points.begin(), y_points.end(), 0.0)/y_points.size());
           double desired_angle = atan((y_avg - y_position)/(x_avg - x_position));
