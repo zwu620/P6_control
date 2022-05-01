@@ -227,36 +227,14 @@ int main ()
   * TODO (Step 1): create pid (pid_steer) for steer command and initialize values
   **/
   PID pid_steer = PID();
-  //pid_steer.Init(0.45, 0.042, 0.3, 1.2, -1.2); //Day 1 Test 1
-  //pid_steer.Init(0.4, 0.02, 0.004, 1.2, -1.2); //Day 1 Test 2
-  //pid_steer.Init(0.25, 0.02, 0.004, 1.2, -1.2); //Day 1 Test 3 -1
-  //pid_steer.Init(0.15, 0.01, 0.003, 1.2, -1.2); //Day 1 Test 2 -3 
-  //pid_steer.Init(0.1, 0.005, 0.001, 1.2, -1.2); //Day 2 Test 1 hit leading car
-  //pid_steer.Init(0.3, 0.01, 0.4, 1.2, -1.2); //Test 2
-  //pid_steer.Init(0.35, 0.1, 0.5, 1.2, -1.2);//Test 3
-  //pid_steer.Init(0.35, 0.07, 0.5, 1.2, -1.2); //Test 4 - kii 0.05, 0.07,
-  //pid_steer.Init(0.35, 0.09, 0.4, 1.2, -1.2); //Test 5
-  //pid_steer.Init(0.3, 0.1, 0.4, 1.2, -1.2); //Test 6
-  //pid_steer.Init(0.45, 0.04, 0.3, 1.2, -1.2); //Test 7 - hit the wall on the right
-  //pid_steer.Init(0.35, 0.02, 0.5, 1.2, -1.2); //Day 3, changed cte part, Test 1 hit the wall on the right // if spiral, hit leading car
-  //pid_steer.Init(0.3, 0.001, 0.1, 1.2, -1.2);
-  pid_steer.Init(0.35, 0.1, 0.5, 1.2, -1.2);//Test 3
+  pid_steer.Init(0.45, 0.042, 0.3, 1.2, -1.2); //Test 1
+
   // initialize pid throttle
   /**
   * TODO (Step 1): create pid (pid_throttle) for throttle command and initialize values
   **/
   PID pid_throttle = PID();
-  //pid_throttle.Init(0.3, 0.02, 0.5, 1, -1); //Day 1 Test 1
-  //pid_throttle.Init(0.15, 0.02, 0.05, 1, -1); //Day 1 Test 2
-  //pid_throttle.Init(0.15, 0.02, 0.05, 1, -1); //Day 1 Test 3 -1
-  //pid_throttle.Init(0.2, 0.05, 0.1, 1, -1); //Day 1 Test 2-3
-  //pid_throttle.Init(0.2, 0.05, 0.1, 1, -1); // Day 2 Test 1 hit leading car
-  //pid_throttle.Init(0.35, 0.01, 0.2, 1, -1); //Test 2
-  //pid_throttle.Init(0.35, 0.01, 0.2, 1, -1);//Test 3, 4
-  //pid_throttle.Init(0.35, 0.01, 0.2, 1, -1);//Test 5
-  //pid_throttle.Init(0.35, 0.01, 0.2, 1, -1);//Test 6
-  //pid_throttle.Init(0.15, 0.04, 0.1, 1, -1);//Test 7 - hit the wall on the right
-  pid_throttle.Init(0.35, 0.01, 0.2, 1, -1);
+  pid_throttle.Init(0.3, 0.02, 0.5, 1, -1); //Test 1
 
   h.onMessage([&pid_steer, &pid_throttle, &new_delta_time, &timer, &prev_timer, &i, &prev_timer](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, uWS::OpCode opCode)
   {
@@ -332,9 +310,7 @@ int main ()
           //error_steer = 0;
 		  //The variable y_points and x_point gives the desired trajectory planned by the path_planner.
           //Calaculate the desired angle by the most recent two points in the planed path:
-          //int best_spiral_idx = best_spirals.back();
-          //double desired_angle = angle_between_points(spirals_x[best_spiral_idx].front(), spirals_y[best_spiral_idx].front(), spirals_x[best_spiral_idx][1], spirals_y[best_spiral_idx][1]);
-          //double desired_angle = angle_between_points(spirals_x[best_spiral_idx].front(), spirals_y[best_spiral_idx].front(), spirals_x[best_spiral_idx][1], spirals_y[best_spiral_idx][1]);
+          //double desired_angle = angle_between_points(x_points[x_points.size()-2], y_points[y_points.size()-2], x_points[x_points.size()-1], y_points[y_points.size()-1]);
           double x_avg = (accumulate(x_points.begin(), x_points.end(), 0.0)/x_points.size());
           double y_avg = (accumulate(y_points.begin(), y_points.end(), 0.0)/y_points.size());
           double desired_angle = atan((y_avg - y_position)/(x_avg - x_position));
@@ -349,9 +325,8 @@ int main ()
           **/
            // Compute control to apply
            pid_steer.UpdateError(error_steer);
-          
            steer_output = pid_steer.TotalError();
-          std::cout << desired_angle<< " " << yaw << " " <<error_steer << " " << pid_steer.cte << " " << pid_steer.Kp << " " << steer_output << std::endl;
+
            // Save data
            file_steer.seekg(std::ios::beg);
            for(int j=0; j < i - 1; ++j) {
