@@ -239,16 +239,9 @@ int main ()
   //pid_steer.Init(0.3, 0.1, 0.4, 1.2, -1.2); //Test 6
   //pid_steer.Init(0.45, 0.04, 0.3, 1.2, -1.2); //Test 7 - hit the wall on the right
   //pid_steer.Init(100, 0.0000, 0.0, 1.2, -1.2);//Day 3
-  //pid_steer.Init(0.35, 0.1, 0.5, 1.2, -1.2); // Day 4 Test 1
-  //pid_steer.Init(0.2, 0.03, 0.02, 1.2, -1.2); // Day 4 Test 2
-  //pid_steer.Init(0.3, 0.05, 0.2, 1.2, -1.2); // Day 4 Test 3
-  //pid_steer.Init(0.35, 0.1, 0.01, 1.2, -1.2); // Day 5 Test 1
-  //pid_steer.Init(0.2, 0.03, 0.02, 1.2, -1.2); // Day 5 Test 2
-  //pid_steer.Init(0.3, 0.01, 0.1, 1.2, -1.2); // Day 5 Test 3
-  //pid_steer.Init(0.3, 0.01, 0.4, 1.2, -1.2); // Day 5 Test 4
-  //pid_steer.Init(3, 0.1, 0.8, 1.2, -1.2); // Day 5 Test 5
-  //pid_steer.Init(0.1, 0.005, 0.001, 1.2, -1.2); //6 turn right
-  pid_steer.Init(0.2, 0.05, 0.01, 1.2, -1.2); //7 
+  pid_steer.Init(0.35, 0.1, 0.5, 1.2, -1.2); // Day 4 Test 1
+  
+  
   // initialize pid throttle
   /**
   * TODO (Step 1): create pid (pid_throttle) for throttle command and initialize values
@@ -264,16 +257,9 @@ int main ()
   //pid_throttle.Init(0.35, 0.01, 0.2, 1, -1);//Test 5
   //pid_throttle.Init(0.35, 0.01, 0.2, 1, -1);//Test 6
   //pid_throttle.Init(0.15, 0.04, 0.1, 1, -1);//Test 7 - hit the wall on the right
-  //pid_throttle.Init(0.35, 0.01, 0.2, 1, -1); //Day 4 Test 1
-  //pid_throttle.Init(0.182, 0.04, 0.002, 1, -1); //// Day 4 Test 2
-  //pid_throttle.Init(0.35, 0.01, 0.2, 1, -1); //Day 4 Test 3
-  //pid_throttle.Init(0.2, 0.01, 0.002, 1, -1); //Day 5 Test 1
-  //pid_throttle.Init(0.182, 0.04, 0.002, 1, -1); //Day 5 Test 2
-  //pid_throttle.Init(0.3, 0.05, 0.05, 1, -1); //Day 5 Test 3
-  //pid_throttle.Init(0.35, 0.01, 0.2, 1, -1); //Day 5 Test 4/5
-  //pid_throttle.Init(0.2, 0.05, 0.1, 1, -1); // 6 turn right
-  pid_throttle.Init(0.3, 0.05, 0.1, 1, -1); // 7
+  pid_throttle.Init(0.35, 0.01, 0.2, 1, -1); //Day 4 Test 1
   
+
   h.onMessage([&pid_steer, &pid_throttle, &new_delta_time, &timer, &prev_timer, &i, &prev_timer](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, uWS::OpCode opCode)
   {
         auto s = hasData(data);
@@ -356,7 +342,7 @@ int main ()
           //* Tried average of all points
           double x_avg = (accumulate(x_points.begin(), x_points.end(), 0.0)/x_points.size());
           double y_avg = (accumulate(y_points.begin(), y_points.end(), 0.0)/y_points.size());
-          double desired_angle = atan2((y_avg - y_position)/(x_avg - x_position), 0.0);
+          double desired_angle = atan((y_avg - y_position)/(x_avg - x_position));
           desired_angle = correct_angle(desired_angle);
           //Yaw gives the actual rotational angle of the car.
           //Compute the steer error (error_steer) from the position and the desired trajectory
@@ -369,8 +355,7 @@ int main ()
            // Compute control to apply
            pid_steer.UpdateError(error_steer);
            steer_output = pid_steer.TotalError();
-		   std::cout << desired_angle<< " " << yaw << " " <<error_steer << " " << pid_steer.cte << " " << pid_steer.Kp << " " << steer_output << std::endl;
-           
+
            // Save data
            file_steer.seekg(std::ios::beg);
            for(int j=0; j < i - 1; ++j) {

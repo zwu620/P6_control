@@ -32,11 +32,10 @@ void PID::Init(double Kpi, double Kii, double Kdi, double output_lim_maxi, doubl
 }
 
 
-void PID::UpdateError(double cte_in) {
+void PID::UpdateError(double cte) {
    /**
    * TODO: Update PID errors based on cte.
    **/
-   cte = cte_in;
    delta_time = this->delta_time;
    if (delta_time > 0) {
      diff_cte = (cte - pre_cte)/delta_time;
@@ -46,6 +45,7 @@ void PID::UpdateError(double cte_in) {
      diff_cte = 0;
    }
    pre_cte = cte;
+   //int_cte += cte * delta_time;
    int_cte += cte * delta_time;
    
 }
