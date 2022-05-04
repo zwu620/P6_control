@@ -20,8 +20,8 @@ void PID::Init(double Kpi, double Kii, double Kdi, double output_lim_maxi, doubl
    /**
    * TODO: Initialize PID coefficients (and errors, if needed)
    **/
-   cte = 0;
-   diff_cte = 0;
+   //cte = 0;
+   //diff_cte = 0;
    int_cte = 0;
    Kp = Kpi;
    Ki = Kii;
@@ -32,11 +32,11 @@ void PID::Init(double Kpi, double Kii, double Kdi, double output_lim_maxi, doubl
 }
 
 
-void PID::UpdateError(double cte_in) {
+void PID::UpdateError(double cte) {
    /**
    * TODO: Update PID errors based on cte.
    **/
-   cte = cte_in;
+   //cte = cte_in;
    delta_time = this->delta_time;
    if (delta_time > 0) {
      diff_cte = (cte - pre_cte)/delta_time;
