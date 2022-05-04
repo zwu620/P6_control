@@ -254,9 +254,9 @@ int main ()
   //pid_steer.Init(0.3, 0.2, 0.01, 1.2, -1.2); //3
   //pid_steer.Init(0.35, 0.1, 0.5, 1.2, -1.2); //4
   //pid_steer.Init(0.35, 0.1, 0.05, 1.2, -1.2); //5
-  //pid_steer.Init(0.35, 0.1, 0.09, 1.2, -1.2); //6
+  pid_steer.Init(0.35, 0.1, 0.09, 1.2, -1.2); //6
   //pid_steer.Init(0.35, 0.1, 0.2, 1.2, -1.2); //7
-  pid_steer.Init(0.35, 0.1, 0.05, 1.2, -1.2); //7
+  //pid_steer.Init(0.35, 0.1, 0.05, 1.2, -1.2); //7
   // initialize pid throttle
   /**
   * TODO (Step 1): create pid (pid_throttle) for throttle command and initialize values
@@ -285,8 +285,8 @@ int main ()
   //pid_throttle.Init(0.3, 0.01, 0.02, 1, -1); // 2, 3
   //pid_throttle.Init(0.35, 0.01, 0.2, 1, -1); // 4
   //pid_throttle.Init(0.3, 0.01, 0.2, 1, -1); // 5
-  //pid_throttle.Init(0.32, 0.01, 0.2, 1, -1); // 6
-  pid_throttle.Init(0.32, 0.01, 0.02, 1, -1); // 7
+  pid_throttle.Init(0.32, 0.01, 0.2, 1, -1); // 6
+  //pid_throttle.Init(0.32, 0.01, 0.02, 1, -1); // 7
   
   h.onMessage([&pid_steer, &pid_throttle, &new_delta_time, &timer, &prev_timer, &i, &prev_timer](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, uWS::OpCode opCode)
   {
